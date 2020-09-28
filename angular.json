@@ -119,6 +119,46 @@
           }
         }
       }
+    },
+    "NgxCroppie": {
+      "projectType": "library",
+      "root": "projects/ngx-croppie",
+      "sourceRoot": "projects/ngx-croppie/src",
+      "prefix": "ngx",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ngx-croppie/tsconfig.lib.json",
+            "project": "projects/ngx-croppie/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-croppie/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-croppie/src/test.ts",
+            "tsConfig": "projects/ngx-croppie/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-croppie/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-croppie/tsconfig.lib.json",
+              "projects/ngx-croppie/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "NgxCroppieLibrary"
 }
