@@ -1,12 +1,26 @@
 {
-  "name": "ngx-croppie",
-  "version": "0.0.1",
+  "name": "ngx-croppie10",
+  "version": "1.0.0",
+  "description": "Croppie integration for Angular 10",
   "peerDependencies": {
     "@angular/common": "^10.1.3",
     "@angular/core": "^10.1.3"
   },
+  "author": {
+    "name": "Charles Agostini"
+  },
   "dependencies": {
     "croppie": "^2.6.5",
     "tslib": "^2.0.0"
-  }
+  },
+  "keywords": [
+    "angular",
+    "croppie",
+    "cropper",
+    "cropperjs",
+    "angular 10",
+    "typescript",
+    "angular 8"
+  ],
+  "license": "MIT"
 }
