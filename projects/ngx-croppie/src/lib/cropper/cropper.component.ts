@@ -13,16 +13,10 @@ import CropData from 'croppie';
 import CroppieOptions from 'croppie';
 
 export interface ImageCropperSetting {
-  width: number;
-  height: number;
-}
-
-export interface ImageCropperResult {
-  canvas?: HTMLCanvasElement;
-  base64?: any;
-  html?: any;
-  blob?: Blob;
-  rawcanvas?: any;
+  width?: number;
+  height?: number;
+  width_percent?: number;
+  height_percent?: number;
 }
 
 @Component({
@@ -69,6 +63,11 @@ export class CropperComponent implements OnInit, OnDestroy {
 
     const image = ev.target as HTMLImageElement;
     this.imageElement = image;
+
+    if (this.cropper) {
+      this.cropper.destroy();
+      this.cropper = null;
+    }
     this.cropper = new Cropper(image, this.cropperOptions);
   }
 
