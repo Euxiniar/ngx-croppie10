@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
-import {CropperComponent} from '../../projects/ngx-croppie/src/lib/cropper/cropper.component';
+import {CropperComponent, CropperOptions} from '../../projects/ngx-croppie/src/lib/cropper/cropper.component';
 
 @Component({
   selector: 'ngx-root',
