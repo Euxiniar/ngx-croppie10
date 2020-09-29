@@ -10,13 +10,31 @@ import {
 
 import Cropper from 'croppie';
 import CropData from 'croppie';
-import CroppieOptions from 'croppie';
 
 export interface ImageCropperSetting {
   width?: number;
   height?: number;
   width_percent?: number;
   height_percent?: number;
+}
+
+export interface CropperOptions {
+  boundary?: any;
+  customClass?: string;
+  enableExif?: boolean;
+  enableOrientation?: boolean;
+  enableResize?: boolean;
+  enableZoom?: boolean;
+  enforceBoundary?: boolean;
+  mouseWheelZoom?: boolean;
+  showZoomer?: boolean;
+  viewport?: {
+    width?: number;
+    height?: number;
+    width_percent?: number;
+    height_percent?: number;
+    type: string;
+  };
 }
 
 @Component({
@@ -31,7 +49,7 @@ export class CropperComponent implements OnInit, OnDestroy {
   @Input() imageUrl: any;
   @Input() settings: ImageCropperSetting;
   @Input() loadImageErrorText: string;
-  @Input() cropperOptions: CroppieOptions;
+  @Input() cropperOptions: CropperOptions;
 
   public isLoading = true;
   public cropper: Cropper;
@@ -67,6 +85,15 @@ export class CropperComponent implements OnInit, OnDestroy {
     if (this.cropper) {
       this.cropper.destroy();
       this.cropper = null;
+    }
+
+    if (this.cropperOptions.viewport) {
+      if (this.cropperOptions.viewport.width_percent) {
+        this.cropperOptions.viewport.width = this.settings.width * (this.cropperOptions.viewport.width_percent / 100);
+      }
+      if (this.cropperOptions.viewport.height_percent) {
+        this.cropperOptions.viewport.height = this.settings.height * (this.cropperOptions.viewport.height_percent / 100);
+      }
     }
     this.cropper = new Cropper(image, this.cropperOptions);
   }

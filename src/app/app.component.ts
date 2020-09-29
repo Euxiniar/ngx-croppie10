@@ -9,9 +9,9 @@ import {CropperComponent} from '../../projects/ngx-croppie/src/lib/cropper/cropp
 export class AppComponent implements OnInit {
   title = 'app works';
   @ViewChild('angularCropper', {static: false}) ngxCroppie: CropperComponent;
-  config: any = {
+  config: CropperOptions = {
     viewport: {
-      width: 100, height: 700, type: 'square'
+      width: 10, height_percent: 100, type: 'square'
     }
   };
   imageUrl: any = 'https://fengyuanchen.github.io/cropperjs/images/picture.jpg';
