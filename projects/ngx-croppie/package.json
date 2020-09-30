@@ -14,6 +14,7 @@
     "url": "https://github.com/Euxiniar/ngx-croppie10"
   },
   "dependencies": {
+    "angular-resize-event": "^2.0.0",
     "croppie": "^2.6.5",
     "tslib": "^2.0.0"
   },

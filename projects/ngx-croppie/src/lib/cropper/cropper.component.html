@@ -10,11 +10,12 @@
   <div class="alert alert-warning" *ngIf="loadError">{{ loadImageErrorText }}</div>
 
   <!-- CROPPER -->
-  <div class="cropper"
+  <div class="cropperClass"
        [style.width.px]="settings.width"
        [style.height.px]="settings.height"
        [style.width.%]="settings.width_percent"
-       [style.height.%]="settings.height_percent">
+       [style.height.%]="settings.height_percent"
+       (resized)="onResized($event)">
     <img #image alt="image" [src]="imageUrl" (load)="imageLoaded($event)" (error)="imageLoadError($event)" />
   </div>
 </div>

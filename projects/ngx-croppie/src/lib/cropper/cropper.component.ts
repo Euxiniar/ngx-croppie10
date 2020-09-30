@@ -8,8 +8,9 @@ import {
   OnDestroy
 } from '@angular/core';
 
-import Cropper from 'croppie';
+import * as Cropper from 'croppie';
 import CropData from 'croppie';
+import {ResizedEvent} from 'angular-resize-event';
 
 export interface ImageCropperSetting {
   width?: number;
@@ -64,7 +65,6 @@ export class CropperComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.cropper) {
-      this.cropper.destroy();
       this.cropper = null;
     }
   }
@@ -79,13 +79,13 @@ export class CropperComponent implements OnInit, OnDestroy {
     this.isLoading = false;
     this.loadError = false;
 
-    const image = ev.target as HTMLImageElement;
-    this.imageElement = image;
+    this.imageElement = null;
+    this.imageElement = ev.target as HTMLImageElement;
+    this.updateCropper();
+  }
 
-    if (this.cropper) {
-      this.cropper.destroy();
-      this.cropper = null;
-    }
+  updateCropper(): void {
+
 
     if (this.cropperOptions.viewport) {
       if (this.cropperOptions.viewport.width_percent) {
@@ -95,7 +95,7 @@ export class CropperComponent implements OnInit, OnDestroy {
         this.cropperOptions.viewport.height = this.settings.height * (this.cropperOptions.viewport.height_percent / 100);
       }
     }
-    this.cropper = new Cropper(image, this.cropperOptions);
+    this.cropper = new Cropper(this.imageElement, this.cropperOptions);
   }
 
   /**
@@ -119,5 +119,21 @@ export class CropperComponent implements OnInit, OnDestroy {
 
   getResult(): Promise<any> {
     return this.cropper.result();
+  }
+
+  onResized($event: ResizedEvent): void {
+    this.settings.width = $event.element.nativeElement.offsetWidth;
+    this.settings.height = $event.element.nativeElement.offsetHeight;
+    if (!this.isLoading) {
+      if (this.cropper) {
+        this.cropper = null;
+        const cropperElem = document.getElementsByClassName('cropperClass')[0];
+        const parent = this.image.nativeElement.parentElement;
+
+        cropperElem.appendChild(this.image.nativeElement);
+        cropperElem.removeChild(parent);
+        this.image.nativeElement.src = this.imageUrl;
+      }
+    }
   }
 }

@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   @ViewChild('angularCropper', {static: false}) ngxCroppie: CropperComponent;
   config: CropperOptions = {
     viewport: {
-      width: 10, height_percent: 100, type: 'square'
+      width_percent: 50, height_percent: 100, type: 'square'
     }
   };
   imageUrl: any = 'https://fengyuanchen.github.io/cropperjs/images/picture.jpg';
