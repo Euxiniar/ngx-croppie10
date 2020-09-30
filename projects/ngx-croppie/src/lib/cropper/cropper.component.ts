@@ -132,7 +132,7 @@ export class CropperComponent implements OnInit, OnDestroy {
 
         cropperElem.appendChild(this.image.nativeElement);
         cropperElem.removeChild(parent);
-        this.image.nativeElement.src = this.imageUrl;
+        this.updateCropper();
       }
     }
   }
