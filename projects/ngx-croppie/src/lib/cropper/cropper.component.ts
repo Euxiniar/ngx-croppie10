@@ -5,7 +5,7 @@ import {
   ElementRef,
   ViewEncapsulation,
   OnInit,
-  OnDestroy
+  OnDestroy, OnChanges, SimpleChanges
 } from '@angular/core';
 
 import * as Cropper from 'croppie';
@@ -17,6 +17,7 @@ export interface ImageCropperSetting {
   height?: number;
   width_percent?: number;
   height_percent?: number;
+  ratio?: boolean;
 }
 
 export interface CropperOptions {
@@ -44,8 +45,9 @@ export interface CropperOptions {
   styleUrls: ['./cropper.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class CropperComponent implements OnInit, OnDestroy {
+export class CropperComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('image') image: ElementRef;
+  cropperClass: HTMLElement;
 
   @Input() imageUrl: any;
   @Input() settings: ImageCropperSetting;
@@ -56,11 +58,15 @@ export class CropperComponent implements OnInit, OnDestroy {
   public cropper: Cropper;
   public imageElement: HTMLImageElement;
   public loadError: any;
+  public initialized = false;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.initialized = true;
+    this.cropperClass = document.getElementById('cropperClass');
+    this.updateCropperStyle(this.settings);
   }
 
   ngOnDestroy(): void {
@@ -69,11 +75,18 @@ export class CropperComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.initialized) {
+      this.updateCropperStyle(changes.settings.currentValue);
+    }
+  }
+
   /**
    * Image loaded
    * @param ev is the event emitted
    */
   imageLoaded(ev: Event): void {
+
     //
     // Unset load error state
     this.isLoading = false;
@@ -85,17 +98,16 @@ export class CropperComponent implements OnInit, OnDestroy {
   }
 
   updateCropper(): void {
-
-
     if (this.cropperOptions.viewport) {
       if (this.cropperOptions.viewport.width_percent) {
         this.cropperOptions.viewport.width = this.settings.width * (this.cropperOptions.viewport.width_percent / 100);
       }
       if (this.cropperOptions.viewport.height_percent) {
-        this.cropperOptions.viewport.height = this.settings.height * (this.cropperOptions.viewport.height_percent / 100);
+        this.cropperOptions.viewport.height = (this.settings.height - 59) * (this.cropperOptions.viewport.height_percent / 100);
       }
     }
     this.cropper = new Cropper(this.imageElement, this.cropperOptions);
+
   }
 
   /**
@@ -133,6 +145,27 @@ export class CropperComponent implements OnInit, OnDestroy {
         cropperElem.appendChild(this.image.nativeElement);
         cropperElem.removeChild(parent);
         this.updateCropper();
+      }
+    }
+  }
+
+  private updateCropperStyle(currentValue: ImageCropperSetting): void {
+    if (currentValue.ratio) {
+      // style cropper-wrapper et cropper en mode ratio
+      if (currentValue.height_percent) {
+
+      }
+    } else {
+      // style cropper-wrapper et cropper en mode classic
+      if (currentValue.width_percent) {
+        this.cropperClass.style.width = currentValue.width_percent.toString() + '%';
+      } else if (currentValue.width) {
+        this.cropperClass.style.width = currentValue.width.toString() + 'px';
+      }
+      if (currentValue.height_percent) {
+        this.cropperClass.style.height = currentValue.height_percent.toString() + '%';
+      } else if (currentValue.height) {
+        this.cropperClass.style.height = currentValue.height.toString() + 'px';
       }
     }
   }
