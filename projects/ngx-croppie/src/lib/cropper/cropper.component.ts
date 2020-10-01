@@ -17,7 +17,7 @@ export interface ImageCropperSetting {
   height?: number;
   width_percent?: number;
   height_percent?: number;
-  ratio?: boolean;
+  ratio?: number;
 }
 
 export interface CropperOptions {
@@ -47,6 +47,7 @@ export interface CropperOptions {
 })
 export class CropperComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('image') image: ElementRef;
+  cropperWrapper: HTMLElement;
   cropperClass: HTMLElement;
 
   @Input() imageUrl: any;
@@ -59,12 +60,14 @@ export class CropperComponent implements OnInit, OnDestroy, OnChanges {
   public imageElement: HTMLImageElement;
   public loadError: any;
   public initialized = false;
+  public ratio = false;
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.initialized = true;
+    this.cropperWrapper = document.getElementById('cropper-wrapper');
     this.cropperClass = document.getElementById('cropperClass');
     this.updateCropperStyle(this.settings);
   }
@@ -139,7 +142,7 @@ export class CropperComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.isLoading) {
       if (this.cropper) {
         this.cropper = null;
-        const cropperElem = document.getElementsByClassName('cropperClass')[0];
+        const cropperElem = this.cropperClass;
         const parent = this.image.nativeElement.parentElement;
 
         cropperElem.appendChild(this.image.nativeElement);
@@ -152,10 +155,11 @@ export class CropperComponent implements OnInit, OnDestroy, OnChanges {
   private updateCropperStyle(currentValue: ImageCropperSetting): void {
     if (currentValue.ratio) {
       // style cropper-wrapper et cropper en mode ratio
-      if (currentValue.height_percent) {
-
-      }
+      this.ratio = true;
+      this.cropperWrapper.style.paddingTop = currentValue.ratio * 100 + '%';
     } else {
+      this.cropperWrapper.style.paddingTop = '';
+      this.ratio = false;
       // style cropper-wrapper et cropper en mode classic
       if (currentValue.width_percent) {
         this.cropperClass.style.width = currentValue.width_percent.toString() + '%';

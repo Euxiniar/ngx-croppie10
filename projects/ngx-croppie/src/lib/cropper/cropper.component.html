@@ -1,5 +1,5 @@
 <!-- CROPPER WRAPPER -->
-<div class="cropper-wrapper">
+<div id="cropper-wrapper" [ngClass]="{'cropper-wrapper-ratio':ratio, 'cropper-wrapper':!ratio}">
 
   <!-- LOADING -->
   <div class="loading-block" *ngIf="isLoading">
@@ -10,8 +10,8 @@
   <div class="alert alert-warning" *ngIf="loadError">{{ loadImageErrorText }}</div>
 
   <!-- CROPPER -->
-  <div id="cropperClass" class="cropperClass"
+  <div id="cropperClass" [ngClass]="{'cropperClass-ratio':ratio, 'cropperClass':!ratio}"
        (resized)="onResized($event)">
-    <img #image alt="image" [src]="imageUrl" (load)="imageLoaded($event)" (error)="imageLoadError($event)" />
+    <img #image alt="image" [src]="imageUrl" (load)="imageLoaded($event)" (error)="imageLoadError($event)"/>
   </div>
 </div>
