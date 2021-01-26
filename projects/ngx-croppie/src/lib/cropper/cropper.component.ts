@@ -132,8 +132,8 @@ export class CropperComponent implements OnInit, OnDestroy, OnChanges {
     return this.cropper.get();
   }
 
-  getResult(): Promise<any> {
-    return this.cropper.result();
+  getResult(options?): Promise<any> {
+    return this.cropper.result(options);
   }
 
   onResized($event: ResizedEvent): void {
